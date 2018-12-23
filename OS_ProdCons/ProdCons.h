@@ -4,8 +4,8 @@
 #define CONSOLE_COLOR _T("ConsoleColor")    // the name of the mutex for console color
 #define FULL _T("Full")                     // the name of the fullness semaphore
 #define EMPTY _T("Empty")                   // the name of the emtiness emaphore
-#define PRODCNT 10                          // count of producers
-#define CONSCNT 12                          // count of consumers
+#define PRODCNT 8                           // count of producers
+#define CONSCNT 10                          // count of consumers
 
 enum Company
 {
