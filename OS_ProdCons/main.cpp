@@ -9,7 +9,7 @@ ProdCons prodCons;
 void SetConsoleColor(char color)
 {
     HANDLE ConsoleHandle = CreateFile(_T("CONOUT$"),
-                                      GENERIC_WRITE | GENERIC_READ,
+                                      GENERIC_WRITE,
                                       0, NULL,
                                       OPEN_EXISTING,
                                       0, NULL);
@@ -56,18 +56,21 @@ DWORD WINAPI Consumer(void * num)
     if (NULL == full) { _tprintf(_T("Something went wrong - %d"), GetLastError()); return -1; }
     HANDLE empty = OpenSemaphore(SEMAPHORE_ALL_ACCESS, FALSE, EMPTY);
     if (NULL == empty) { _tprintf(_T("Something went wrong - %d"), GetLastError()); return -1; }
+    
     Product item;
     int* n = static_cast<int *>(num);
+    int index;
     while (true)
     {
         WaitForSingleObject(full, INFINITE);
         WaitForSingleObject(m, INFINITE);
         item = prodCons.RemoveFromStorage();
+        index = prodCons.GetIndex();
         ReleaseMutex(m);
         ReleaseSemaphore(empty, 1, NULL);
         WaitForSingleObject(consoleColor, INFINITE);
         SetConsoleColor(4);
-        prodCons.Consume(item, *n);
+        prodCons.Consume(item, *n, index);
         ReleaseMutex(consoleColor);
         Sleep(TIREDNESS);
     }

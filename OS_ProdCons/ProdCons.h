@@ -31,7 +31,8 @@ private:
 public:
     ProdCons();
     Product Porduce();
-    void Consume(Product, int);
+    void Consume(Product, int, int);
     void PutIntoStorage(Product, int);
     Product RemoveFromStorage();
+    int GetIndex();
 };
