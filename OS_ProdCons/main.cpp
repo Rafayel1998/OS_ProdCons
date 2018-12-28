@@ -79,8 +79,6 @@ DWORD WINAPI Consumer(void * num)
 
 int _tmain()
 {
-    srand(time(0));
-    SetConsoleColor(3);
     HANDLE m = CreateMutex(NULL, FALSE, M);
     if (NULL == m) { _tprintf(_T("Something went wrong - %d"), GetLastError()); return -1; }
     HANDLE consoleColor = CreateMutex(NULL, FALSE, CONSOLE_COLOR);
@@ -90,6 +88,8 @@ int _tmain()
     HANDLE empty = CreateSemaphore(NULL, STORAGE_CAPACITY, STORAGE_CAPACITY, EMPTY);
     if (NULL == empty) { _tprintf(_T("Something went wrong - %d"), GetLastError()); return -1; }
 
+    srand(time(0));
+    SetConsoleColor(3);
     _tprintf(_T("----Starting Producer-Consumer Session----\n"));
     Sleep(MUCHTIREDNESS);
     int i;
@@ -105,7 +105,7 @@ int _tmain()
             _tprintf(_T("Producer %d is ill, because of %d"), i, GetLastError());
         }
     }
-    Sleep(MUCHTIREDNESS);
+    Sleep(2 * MUCHTIREDNESS);
     for (; i < PRODCNT + CONSCNT; i++)
     {
         int * k = new int;
